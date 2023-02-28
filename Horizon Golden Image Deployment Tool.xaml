@@ -1,0 +1,94 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+    x:Name="mainwindow"
+    Title="Horizon Image Deployment Tool" Height="660" Width="800">
+    <Canvas x:Name="canvas">
+        <TabControl Height="660" Width="800" >
+            <TabItem x:Name="pools_tab" Header="Desktop Pools">
+                <Canvas >
+                    <Button x:Name="VDI_Connect_Button" Content="Connect" HorizontalAlignment="Left" VerticalAlignment="Center" Width="160" Canvas.Left="570" Height="22" Canvas.Top="30" ToolTip="Connect and get the latest information" />
+                    <Label x:Name="VDI_Statusbox_Label" BorderThickness="1" Content="Status: Not Connected" Width="300" Canvas.Left="430" Canvas.Top="537" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />
+                    <ComboBox x:Name="VDI_DesktopPool_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="30" Canvas.Top="30" ToolTip="Select the Desktop Pool you want to update" />
+                    <ComboBox x:Name="VDI_Golden_Image_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="210" Canvas.Top="30" ToolTip="Select the Machine that has the correct Snapshot" />
+                    <ComboBox x:Name="VDI_Snapshot_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="390" Canvas.Top="30" ToolTip="Select the Snapshot to be used as Golden Image" />
+                    <CheckBox x:Name="VDI_secondaryimage_checkbox" Content="Push as Secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" IsChecked="False" Canvas.Left="570" Canvas.Top="342" ToolTip="Deploy the selected Snapshot as Secondary Image"/>
+                    <CheckBox x:Name="VDI_StopOnError_checkbox" Content="Stop on error" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="90" ToolTip="Select to stop on errors or not" />
+                    <ComboBox x:Name="VDI_LofOffPolicy_Combobox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="110" ToolTip="Select the logoff policy" />
+                    <CheckBox x:Name="VDI_Resize_checkbox" Content="Enable Resize Options" HorizontalAlignment="Left" VerticalAlignment="Center" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="137" ToolTip="Enable resizing from the Golden Image size" />
+                    <Button x:Name="VDI_Apply_Golden_Image_button"  Content="Deploy Golden Image" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="510" ToolTip="Applies the selected Golden Image in the selected state."/>
+                    <Button x:Name="VDI_Apply_Secondary_Image_button"  Content="Apply Secondary Image" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="456" ToolTip="Configures the selected machines with the current Secondary Image"/>
+                    <CheckBox x:Name="VDI_vtpm_checkbox" Content="Add vTPM" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="70" ToolTip="Add a vTPM to the machine" />
+                    <Button x:Name="VDI_Cancel_Secondary_Image_button" Content="Cancel secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="430" ToolTip="Cancels the current secondary Image"/>
+                    <Button x:Name="VDI_Promote_Secondary_Image_button" Content="Promote secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="483" ToolTip="Promotes the secondary Image to the Primary Image"/>
+                    <ComboBox x:Name="VDI_Memory_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="160" IsEditable="True" IsReadOnly="True" Text="Memory Size" ToolTip="Memory" />
+                    <ComboBox x:Name="VDI_CPUCount_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="190" IsEditable="True" IsReadOnly="True" Text="Cores" ToolTip="Cores"/>
+                    <ComboBox x:Name="VDI_CoresPerSocket_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="220" IsEditable="True" IsReadOnly="True" Text="Cores/Socket" ToolTip="Cores/Socket"/>
+                    <CheckBox x:Name="VDI_Enable_datetimepicker_checkbox" Content="Schedule deployment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="250" ToolTip="Enables scheduling the Golden Image deployment." />
+                    <DatePicker x:Name="VDI_datepicker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="25" IsTodayHighlighted="True"  IsEnabled="False" Canvas.Left="570" Canvas.Top="275" ToolTip="Select the Date" />
+                    <ComboBox x:Name="VDI_timepicker_hour_combobox" HorizontalAlignment="Left"  Width="45" Height="25" VerticalAlignment="Center" IsEnabled="False" Canvas.Left="570" Canvas.Top="310" ToolTip="Hours" />
+                    <ComboBox x:Name="VDI_timepicker_minute_combobox" HorizontalAlignment="Left" Width="45" Height="25" VerticalAlignment="Center" IsEnabled="False" Canvas.Left="630" Canvas.Top="310" ToolTip="Minutes" />
+                    <Label x:Name="VDI_timepicker_label"  Content=":" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="615" Canvas.Top="310" ToolTip="This separates Hours from Minutes" />
+                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3.2" VerticalAlignment="Top" Canvas.Left="30" Canvas.Top="80">
+                        <TextBlock x:Name="VDI_Status_Textblock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Desktop Pool Status:" VerticalAlignment="Top" Width="510" Height="305" Canvas.Left="30" Canvas.Top="80"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3.2" VerticalAlignment="Top" Canvas.Left="30" Canvas.Top="413">
+                        <ListBox x:Name="VDI_Machines_ListBox" BorderThickness="0" Height="150" Width="300" Canvas.Left="30" Canvas.Top="413" SelectionMode="Multiple" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" ToolTip="Select the machines to apply the secondary image to."/>
+                    </Border>
+                </Canvas>
+            </TabItem>
+            <TabItem x:Name="farms_tab" Header="RDS Farms">
+                <Canvas>
+                    <Button x:Name="RDS_Connect_Button" Content="Connect" HorizontalAlignment="Left" VerticalAlignment="Center" Width="160" Canvas.Left="570" Height="22" Canvas.Top="30" ToolTip="Connect and get the latest information" />
+                    <Label x:Name="RDS_Statusbox_Label" BorderThickness="1" Content="Status: Not Connected" Width="300" Canvas.Left="430" Canvas.Top="537" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />
+                    <ComboBox x:Name="RDS_Farm_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="30" Canvas.Top="30" ToolTip="Select the RDS Farm you want to update" />
+                    <ComboBox x:Name="RDS_Golden_Image_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="210" Canvas.Top="30" ToolTip="Select the Machine that has the correct Snapshot" />
+                    <ComboBox x:Name="RDS_Snapshot_Combobox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="22" IsEnabled="False" Canvas.Left="390" Canvas.Top="30" ToolTip="Select the Snapshot to be used as Golden Image" />
+                    <CheckBox x:Name="RDS_secondaryimage_checkbox" Content="Push as Secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="342" ToolTip="Deploy the selected Snapshot as Secondary Image" />
+                    <CheckBox x:Name="RDS_StopOnError_checkbox" Content="Stop on error" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="90" ToolTip="Select to stop on errors or not" />
+                    <ComboBox x:Name="RDS_LofOffPolicy_Combobox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="110" ToolTip="Select the logoff policy" />
+                    <CheckBox x:Name="RDS_Resize_checkbox" Content="Enable Resize Options" HorizontalAlignment="Left" VerticalAlignment="Center" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="137" ToolTip="Enable resizing from the Golden Image size" />
+                    <Button x:Name="RDS_Apply_Golden_Image_button"  Content="Deploy Golden Image" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="510" ToolTip="Deploy the new Golden Image" />
+                    <Button x:Name="RDS_Apply_Secondary_Image_button"  Content="Apply Secondary Image" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="456" ToolTip="Configures the selected machines with the current Secondary Image"/>
+                    <Button x:Name="RDS_Cancel_Secondary_Image_button" Content="Cancel secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="430" ToolTip="Cancel the secondary image" />
+                    <Button x:Name="RDS_Promote_Secondary_Image_button" Content="Promote secondary Image" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Width="160" Canvas.Left="570" Canvas.Top="483" ToolTip="Promote the secondary image to Primary" />
+                    <ComboBox x:Name="RDS_Memory_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="160" IsEditable="True" IsReadOnly="True" Text="Memory Size" ToolTip="Memory" />
+                    <ComboBox x:Name="RDS_CPUCount_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="190" IsEditable="True" IsReadOnly="True" Text="Cores" ToolTip="Cores"/>
+                    <ComboBox x:Name="RDS_CoresPerSocket_ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="220" IsEditable="True" IsReadOnly="True" Text="Cores/Socket" ToolTip="Cores/Socket"/>
+                    <CheckBox x:Name="RDS_Enable_datetimepicker_checkbox" Content="Schedule deployment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" IsEnabled="False" Canvas.Left="570" Canvas.Top="250" ToolTip="Enables scheduling the Golden Image deployment." />
+                    <DatePicker x:Name="RDS_datepicker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="25" IsTodayHighlighted="True"  IsEnabled="False" Canvas.Left="570" Canvas.Top="275" ToolTip="Date"/>
+                    <ComboBox x:Name="RDS_timepicker_hour_combobox" HorizontalAlignment="Left"  Width="45" Height="25" VerticalAlignment="Center" IsEnabled="False" Canvas.Left="570" Canvas.Top="310" ToolTip="Hours" />
+                    <ComboBox x:Name="RDS_timepicker_minute_combobox" HorizontalAlignment="Left" Width="45" Height="25" VerticalAlignment="Center" IsEnabled="False" Canvas.Left="630" Canvas.Top="310" ToolTip="Minutes" />
+                    <Label x:Name="RDS_timepicker_label"  Content=":" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="615" Canvas.Top="310" ToolTip="This separates hours from minutes" />
+                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3.2" VerticalAlignment="Top" Canvas.Left="30" Canvas.Top="80">
+                        <TextBlock x:Name="RDS_Status_Textblock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="RDS Farm Status:" VerticalAlignment="Top" Width="510" Height="305" Canvas.Left="30" Canvas.Top="80"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3.2" VerticalAlignment="Top" Canvas.Left="30" Canvas.Top="413">
+                        <ListBox x:Name="RDS_Machines_ListBox" BorderThickness="0" Height="150" Width="300" Canvas.Left="30" Canvas.Top="413" SelectionMode="Multiple" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" ToolTip="Select machines to deploy the secondary image to"/>
+                    </Border>
+                </Canvas>
+            </TabItem>
+            <TabItem x:Name="Config" Header="Configuration">
+                <Canvas>
+                    <Button x:Name="config_save_config_button" TabIndex="8" Content="Save Configuration" HorizontalAlignment="Left" Canvas.Left="30" Canvas.Top="226" VerticalAlignment="Center" Width="150"/>
+                    <Button x:Name="config_reset_config_button" TabIndex="9" Content="Reset Configuration" HorizontalAlignment="Left" Canvas.Left="30" Canvas.Top="198" VerticalAlignment="Center" Width="150" />
+                    <TextBox x:Name="config_conserver_textbox" Canvas.Left="30" TextWrapping="Wrap" Text="Enter Connectionserver DNS" Height="22" Canvas.Top="50" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Label x:Name="config_conserver_label" Content="Connection Server" Canvas.Left="30" Canvas.Top="20"/>
+                    <ComboBox x:Name="config_pod_combobox" TabIndex="5" Canvas.Left="270" Canvas.Top="50" Height="22" Width="200" SelectionChanged="config_pod_combobox_selectionchanged"/>
+                    <Label Content="Pod" Canvas.Left="270" VerticalAlignment="Center" Canvas.Top="20"/>
+                    <Label Content="Server" Canvas.Left="510" Canvas.Top="22"/>
+                    <ComboBox x:Name="config_conserver_combobox" TabIndex="6" Height="22" Canvas.Left="510" Canvas.Top="50" Width="200"/>
+                    <Button x:Name="config_test_credential_button" TabIndex="4" Content="Test Credentials" Width="150" Canvas.Left="30" Canvas.Top="255"/>
+                    <Label x:Name="config_credential_label" Content="Credential status: unknown" VerticalAlignment="Center" Canvas.Left="30" Canvas.Top="290"/>
+                    <CheckBox x:Name="config_ignore_cert_errors_checkbox" TabIndex="7" Content="Ignore Certificate Errors" Canvas.Left="30" Canvas.Top="175" Width="150" IsChecked="True"/>
+                    <TextBox x:Name="config_username_textbox" TabIndex="1" Canvas.Left="30" TextWrapping="Wrap" Text="UserName" Width="150" Canvas.Top="100"/>
+                    <TextBox x:Name="config_domain_textbox" TabIndex="2" Canvas.Left="30" TextWrapping="Wrap" Text="Domain" Width="150" Canvas.Top="125"/>
+                    <PasswordBox x:Name="config_passwordbox" TabIndex="3" Canvas.Left="30" Width="150" Canvas.Top="150" Password="******"/>
+                </Canvas>
+            </TabItem>
+        </TabControl>
+    </Canvas>
+</Window>
