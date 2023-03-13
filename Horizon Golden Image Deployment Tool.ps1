@@ -1047,30 +1047,30 @@ function VDI_Apply_Secondary_Image_button_click {
     $json = $targetmachines | ConvertTo-Json -Depth 100 -AsArray
     $result = invoke-hvcommand -URL "$serverURL/rest/inventory/v1/desktop-pools/$desktoppoolid/action/apply-image?pending_image=true" -accesstoken $AccessToken -json $json -Method Post
     $resultcount = $result.count
-    $success = $result | Where-Object {$_.status_code -eq 200}
+    $success = $result | Where-Object { $_.status_code -eq 200 }
     $successcount = $success.count
-    $failures =  $result | Where-Object {$_.status_code -ne 200}
+    $failures = $result | Where-Object { $_.status_code -ne 200 }
     $failurecount = $failures.count
-    if ($successcount -eq 0){
+    if ($successcount -eq 0) {
         send-status -Status "ERROR" -message "Failure starting Golden Image deployment"
         $VDI_Statusbox_Label.Content = "Failure starting Golden Image deployment"
         send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-        foreach($failure in $failures){
-            $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+        foreach ($failure in $failures) {
+            $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
             $error = $failure.errors.error_message
             send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
         }
     }
-    elseif($failurecount -eq 0){
+    elseif ($failurecount -eq 0) {
         send-status -Status "INFORMATIONAL" -message "Started Golden Image deployment"
         $VDI_Statusbox_Label.Content = "Started Golden Image Deployment"
     }
-    else{
+    else {
         send-status -Status "ERROR" -message "Partial failure starting Golden Image deployment"
         $VDI_Statusbox_Label.Content = "Partial failure starting Golden Image deployment"
         send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-        foreach($failure in $failures){
-            $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+        foreach ($failure in $failures) {
+            $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
             $error = $failure.errors.error_message
             send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
         }
@@ -1227,39 +1227,39 @@ function VDI_Apply_Golden_Image_button_click {
     $result = invoke-hvcommand -URL "$serverURL/rest/inventory/v2/desktop-pools/$desktoppoolid/action/schedule-push-image" -accesstoken $AccessToken -json $json -Method Post
     if ($VDI_secondaryimage_checkbox.IsChecked -eq $true) {
         $resultcount = $result.count
-        $success = $result | Where-Object {$_.status_code -eq 200}
+        $success = $result | Where-Object { $_.status_code -eq 200 }
         $successcount = $success.count
-        $failures =  $result | Where-Object {$_.status_code -ne 200}
+        $failures = $result | Where-Object { $_.status_code -ne 200 }
         $failurecount = $failures.count
-        if ($successcount -eq 0){
+        if ($successcount -eq 0) {
             send-status -Status "ERROR" -message "Failure starting Golden Image deployment"
             $VDI_Apply_Golden_Image_button.IsEnabled = $true
             $VDI_Statusbox_Label.Content = "Failure starting Golden Image deployment"
             send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-            foreach($failure in $failures){
-                $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+            foreach ($failure in $failures) {
+                $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
                 $error = $failure.errors.error_message
                 send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
             }
         }
-        elseif($failurecount -eq 0){
+        elseif ($failurecount -eq 0) {
             send-status -Status "INFORMATIONAL" -message "Started Golden Image deployment"
             $VDI_Apply_Golden_Image_button.IsEnabled = $false
             $VDI_Statusbox_Label.Content = "Started Golden Image Deployment"
         }
-        else{
+        else {
             send-status -Status "ERROR" -message "Partial failure starting Golden Image deployment"
             $VDI_Apply_Golden_Image_button.IsEnabled = $false
             $VDI_Statusbox_Label.Content = "Partial failure starting Golden Image deployment"
             send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-            foreach($failure in $failures){
-                $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+            foreach ($failure in $failures) {
+                $name = ($VDI_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
                 $error = $failure.errors.error_message
                 send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
             }
         }
     }
-    else{
+    else {
         $result = $result | ConvertFrom-Json
         if ($result.status -eq "BAD_REQUEST") {
             $errors = ($result.errors).error_key
@@ -1272,7 +1272,7 @@ function VDI_Apply_Golden_Image_button_click {
             send-status -Status "INFORMATIONAL" -message "Started Golden Image deployment"
             $VDI_Apply_Golden_Image_button.IsEnabled = $false
             $VDI_Statusbox_Label.Content = "Started Golden Image Deployment"
-    }
+        }
     }
 
 
@@ -1564,7 +1564,7 @@ function VDI_Connect_Button_click {
         send-status -Status "INFORMATIONAL" -message  "Getting vCenter Servers"
         [array]$vcenters = Get-HorizonRestData -accessToken $accesstoken -ConnectionServerURL $serverurl -RestMethod  "config/v2/virtual-centers" 
         foreach ($vcenter in $vcenters) {
-            $vcenterid = $vcenters.id
+            $vcenterid = $vcenter.id
             $vcenter | add-member -membertype NoteProperty -Name "podname"  -Value $podname
             $Script:DataTable.vcenters += $vcenter
             [array]$datacenters = Get-HorizonRestData -accessToken $accesstoken -ConnectionServerURL $serverurl -RestMethod  "external/v1/datacenters?vcenter_id=$vcenterid"
@@ -1789,30 +1789,30 @@ function RDS_Apply_Secondary_Image_button_click {
     $json = $targetmachines | ConvertTo-Json -Depth 100 -AsArray
     $result = invoke-hvcommand -URL "$serverURL/rest/inventory/v1/farms/$farmid/action/apply-image?pending_image=true" -accesstoken $AccessToken -json $json -Method Post
     $resultcount = $result.count
-    $success = $result | Where-Object {$_.status_code -eq 200}
+    $success = $result | Where-Object { $_.status_code -eq 200 }
     $successcount = $success.count
-    $failures =  $result | Where-Object {$_.status_code -ne 200}
+    $failures = $result | Where-Object { $_.status_code -ne 200 }
     $failurecount = $failures.count
-    if ($successcount -eq 0){
+    if ($successcount -eq 0) {
         send-status -Status "ERROR" -message "Failure starting Golden Image deployment"
         $RDS_Statusbox_Label.Content = "Failure starting Golden Image deployment"
         send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-        foreach($failure in $failures){
-            $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+        foreach ($failure in $failures) {
+            $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
             $error = $failure.errors.error_message
             send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
         }
     }
-    elseif($failurecount -eq 0){
+    elseif ($failurecount -eq 0) {
         send-status -Status "INFORMATIONAL" -message "Started Golden Image deployment"
         $RDS_Statusbox_Label.Content = "Started Golden Image Deployment"
     }
-    else{
+    else {
         send-status -Status "ERROR" -message "Partial failure starting Golden Image deployment"
         $RDS_Statusbox_Label.Content = "Partial failure starting Golden Image deployment"
         send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-        foreach($failure in $failures){
-            $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+        foreach ($failure in $failures) {
+            $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
             $error = $failure.errors.error_message
             send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
         }
@@ -1966,38 +1966,38 @@ function RDS_Apply_Golden_Image_button_click {
     
     if ($RDS_secondaryimage_checkbox.IsChecked -eq $true) {
         $resultcount = $result.count
-        $success = $result | Where-Object {$_.status_code -eq 200}
+        $success = $result | Where-Object { $_.status_code -eq 200 }
         $successcount = $success.count
-        $failures =  $result | Where-Object {$_.status_code -ne 200}
+        $failures = $result | Where-Object { $_.status_code -ne 200 }
         $failurecount = $failures.count
-        if ($successcount -eq 0){
+        if ($successcount -eq 0) {
             send-status -Status "ERROR" -message "Failure starting Golden Image deployment"
             $RDS_Statusbox_Label.Content = "Failure starting Golden Image deployment"
             send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-            foreach($failure in $failures){
-                $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+            foreach ($failure in $failures) {
+                $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
                 $error = $failure.errors.error_message
                 send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
             }
         }
-        elseif($failurecount -eq 0){
+        elseif ($failurecount -eq 0) {
             send-status -Status "INFORMATIONAL" -message "Started Golden Image deployment"
             $RDS_Apply_Golden_Image_button.IsEnabled = $false
             $RDS_Statusbox_Label.Content = "Started Golden Image Deployment"
         }
-        else{
+        else {
             send-status -Status "ERROR" -message "Partial failure starting Golden Image deployment"
             $RDS_Apply_Golden_Image_button.IsEnabled = $false
             $RDS_Statusbox_Label.Content = "Partial failure starting Golden Image deployment"
             send-status -Status "ERROR" -message "Error per selected machine to deploy Secondary Image to:"
-            foreach($failure in $failures){
-                $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object {$_.id -eq $failure.id}).name
+            foreach ($failure in $failures) {
+                $name = ($RDS_Machines_ListBox.SelectedItems | Where-Object { $_.id -eq $failure.id }).name
                 $error = $failure.errors.error_message
                 send-status -Status "ERROR" -Message "Failed to deploy image for machine $name with error $error"
             }
         }
     }
-    else{
+    else {
         $result = $result | ConvertFrom-Json
         if ($result.status -eq "BAD_REQUEST") {
             $errors = ($result.errors).error_key
