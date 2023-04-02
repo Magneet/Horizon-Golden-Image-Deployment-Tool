@@ -343,6 +343,7 @@ function Open-HRConnection() {
     send-status -Status "INFORMATIONAL" -message "Connecting to $serverurl as $domain\$username"
     try {
         if ($config_ignore_cert_errors_checkbox.isChecked -eq $true) {
+            send-status -Status "INFORMATIONAL" -message "Ignoring certificate errors."
             $result = invoke-restmethod -Method Post -uri "$ConnectionServerURL/rest/login" -ContentType "application/json" -Body ($Credentials | ConvertTo-Json) -SkipCertificateCheck -HttpVersion 3.0
             send-status -Status "INFORMATIONAL" -message "Successfully logged on"
         }
@@ -2379,7 +2380,10 @@ $window.Add_closing({
         [System.GC]::Collect()
     })
 
-
+$psversion = $psversiontable.PSVersion
+if (!($psversion.Major -ge 7) -and !($psversion.minor -ge 3)) {
+    throw "Powershell 7.3 or later is required, exiting."
+}
 send-status -Message "Opening Window" -Status "INFORMATIONAL"
 store-status
 $window.ShowDialog() | out-null
