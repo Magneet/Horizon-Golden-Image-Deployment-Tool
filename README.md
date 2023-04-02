@@ -14,3 +14,9 @@ https://wp.me/p7yl7A-RV
 
 # Bugs:
 - When scheduling the deployment of a secondary image an error is returned while the deployment is started
+
+# Changelog
+- 02-04-2023:
+  - Added Powershell version detection
+  - fixed bug with single basevm for desktop pools
+  - added to logging if certificate errors are being ignored
