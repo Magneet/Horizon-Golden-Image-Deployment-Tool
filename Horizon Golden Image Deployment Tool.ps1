@@ -1368,7 +1368,7 @@ function VDI_DesktopPool_Combobox_selectionchanged {
         if (($deploymentstate.instant_clone_operation -eq "NONE" -and $null -eq $deploymentstate.instant_clone_pending_image_state) -or ($deploymentstate.instant_clone_operation -eq "NONE" -and $deploymentstate.instant_clone_pending_image_state -eq "FAILED")) {
             $VDI_Golden_Image_Combobox.ItemsSource = $null
             $VDI_Snapshot_Combobox.ItemsSource = $null
-            $availablebasevms = $script:DataTable.Basevms | Where-Object { $_.vcenter_id -eq ($desktoppool.vcenter_id) }
+            [array]$availablebasevms = $script:DataTable.Basevms | Where-Object { $_.vcenter_id -eq ($desktoppool.vcenter_id) }
             $VDI_Golden_Image_Combobox.ItemsSource = $availablebasevms
             $VDI_Golden_Image_Combobox.DisplayMemberPath = 'Name'
             $VDI_Golden_Image_Combobox.SelectedValuePath = 'Id'
